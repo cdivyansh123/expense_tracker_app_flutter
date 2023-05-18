@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../models/expenses.dart';
+
 class NewExpense extends StatefulWidget {
   NewExpense({super.key});
 
@@ -14,10 +16,19 @@ class _NewExpenseState extends State<NewExpense> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
 
-  void _presentDatePicker(){
-    showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(DateTime.now().year-1), lastDate: DateTime.now());
-  }
+  DateTime? _selectedDate;
 
+  Category _selectedCategory=Category.leisure;
+  void _presentDatePicker() async {
+    final pickedDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(DateTime.now().year - 1),
+        lastDate: DateTime.now());
+    setState(() {
+      _selectedDate = pickedDate;
+    });
+  }
 
   @override
   void dispose() {
@@ -51,25 +62,50 @@ class _NewExpenseState extends State<NewExpense> {
                   ),
                 ),
               ),
-              SizedBox(width: 16,),
+              SizedBox(
+                width: 16,
+              ),
               Expanded(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text("Selected Date"),
-                    IconButton(onPressed: (){
-                      _presentDatePicker();
-                      //todo
-                    }, icon: Icon(Icons.calendar_month)),
-
+                    Text(_selectedDate == null
+                        ? "No Selected Date"
+                        : formatter.format(_selectedDate!)),
+                    IconButton(
+                        onPressed: () {
+                          _presentDatePicker();
+                          //todo
+                        },
+                        icon: Icon(Icons.calendar_month)),
                   ],
                 ),
               )
             ],
           ),
+          SizedBox(height: 16,),
           Row(
             children: [
+              DropdownButton(
+                value: _selectedCategory,
+                  items: Category.values.map(
+                    (category) => DropdownMenuItem(
+                      value: category,
+                      child: Text(
+                        category.name.toUpperCase(),
+                      ),
+                    ),
+                  ).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      if(value==null){
+                        return;
+                      }
+                      _selectedCategory=value;
+                    });
+                  }),
+              Spacer(),
               TextButton(
                   onPressed: () {
                     Navigator.pop(context);
