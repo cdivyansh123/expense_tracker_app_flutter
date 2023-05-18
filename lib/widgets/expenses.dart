@@ -25,9 +25,10 @@ class _ExpenseState extends State<Expense> {
         category: Category.leisure),
   ];
 
-  void _openAddExpense(){
-    showModalBottomSheet(context: context, builder: (ctx)=>NewExpense());
+  void _openAddExpense() {
+    showModalBottomSheet(context: context, builder: (ctx) => NewExpense());
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +36,12 @@ class _ExpenseState extends State<Expense> {
       appBar: AppBar(
         title: Text("Expense Tracker"),
         actions: [
-          IconButton(onPressed: (){
-            _openAddExpense();
-            //todo
-          }, icon: Icon(Icons.add)),
+          IconButton(
+              onPressed: () {
+                _openAddExpense();
+                //todo
+              },
+              icon: Icon(Icons.add)),
         ],
       ),
       body: Column(
