@@ -26,9 +26,23 @@ class _ExpenseState extends State<Expense> {
   ];
 
   void _openAddExpense() {
-    showModalBottomSheet(context: context, builder: (ctx) => NewExpense());
+    showModalBottomSheet(
+      isScrollControlled: true,
+        context: context,
+        builder: (ctx) => NewExpense(onAddExpense: addExpense));
   }
 
+  void addExpense(Expenses expense) {
+    setState(() {
+      _registerExpense.add(expense);
+    });
+  }
+
+  void _removeExpense(Expenses expense){
+    setState(() {
+      _registerExpense.remove(expense);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +61,7 @@ class _ExpenseState extends State<Expense> {
       body: Column(
         children: [
           Text("the chart.."),
-          Expanded(child: ExpenseList(expenses: _registerExpense))
+          Expanded(child: ExpenseList(expenses: _registerExpense, onRemoveExpenses: _removeExpense,))
         ],
       ),
     );

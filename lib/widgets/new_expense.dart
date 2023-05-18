@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import '../models/expenses.dart';
 
 class NewExpense extends StatefulWidget {
-  NewExpense({super.key});
+  NewExpense({super.key, required this.onAddExpense});
+
+  final void Function(Expenses expense) onAddExpense;
 
   @override
   State<NewExpense> createState() {
@@ -44,8 +46,11 @@ class _NewExpenseState extends State<NewExpense> {
           }, child: Text("close"))
         ],
       ));
+
       return;
     }
+    widget.onAddExpense(Expenses(title: _titleController.text, amount: enteredAmount , date: _selectedDate!, category: _selectedCategory));
+    Navigator.pop(context);
   }
 
   @override
@@ -58,7 +63,7 @@ class _NewExpenseState extends State<NewExpense> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(16),
+      padding: EdgeInsets.fromLTRB(16,50,16,16),
       child: Column(
         children: [
           TextField(
@@ -132,7 +137,9 @@ class _NewExpenseState extends State<NewExpense> {
                   child: Text("Cancel")),
               ElevatedButton(
                   onPressed: _submitExpenseData,
-                  child: Text("Save Expense"))
+                  child: Text("Save Expense")
+              ),
+
             ],
           )
         ],
