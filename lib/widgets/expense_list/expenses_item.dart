@@ -1,0 +1,42 @@
+import 'dart:math';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+import '../../models/expenses.dart';
+
+class ExpenseItem extends StatelessWidget {
+  ExpenseItem(this.expense, {super.key});
+
+  final Expenses expense;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        child: Column(
+          children: [
+            Text(expense.title),
+            SizedBox(
+              height: 4,
+            ),
+            Row(
+              children: [
+                Text('\u{20B9}${expense.amount.toStringAsFixed(2)}'),
+                Spacer(),
+                Row(
+                  children: [
+                    Icon(categoryIcons[expense.category]),
+                    SizedBox(height: 8,),
+                    Text(expense.formattedDate),
+                  ],
+                )
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
