@@ -13,21 +13,21 @@ class Expense extends StatefulWidget {
 
 class _ExpenseState extends State<Expense> {
   final List<Expenses> _registerExpense = [
-    Expenses(
-        title: "flutter course",
-        amount: 500,
-        date: DateTime.now(),
-        category: Category.work),
-    Expenses(
-        title: "cinema",
-        amount: 700,
-        date: DateTime.now(),
-        category: Category.leisure),
+    // Expenses(
+    //     title: "flutter course",
+    //     amount: 500,
+    //     date: DateTime.now(),
+    //     category: Category.work),
+    // Expenses(
+    //     title: "cinema",
+    //     amount: 700,
+    //     date: DateTime.now(),
+    //     category: Category.leisure),
   ];
 
   void _openAddExpense() {
     showModalBottomSheet(
-      isScrollControlled: true,
+        isScrollControlled: true,
         context: context,
         builder: (ctx) => NewExpense(onAddExpense: addExpense));
   }
@@ -38,14 +38,36 @@ class _ExpenseState extends State<Expense> {
     });
   }
 
-  void _removeExpense(Expenses expense){
+  void _removeExpense(Expenses expense) {
+    final expenseIndex = _registerExpense.indexOf(expense);
     setState(() {
       _registerExpense.remove(expense);
     });
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      duration: Duration(seconds: 3),
+      content: Text("Expense Deleted"),
+      action: SnackBarAction(
+        label: 'Undo',
+        onPressed: () {
+          setState(() {
+            _registerExpense.insert(expenseIndex, expense);
+          });
+        },
+      ),
+    ));
   }
 
   @override
   Widget build(BuildContext context) {
+    Widget maincontent = Center(
+      child: Text("No expense found "),
+    );
+    if (_registerExpense.isNotEmpty) {
+      maincontent = ExpenseList(
+        expenses: _registerExpense,
+        onRemoveExpenses: _removeExpense,
+      );
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text("Expense Tracker"),
@@ -59,10 +81,7 @@ class _ExpenseState extends State<Expense> {
         ],
       ),
       body: Column(
-        children: [
-          Text("the chart.."),
-          Expanded(child: ExpenseList(expenses: _registerExpense, onRemoveExpenses: _removeExpense,))
-        ],
+        children: [Text("the chart.."), Expanded(child: maincontent)],
       ),
     );
   }

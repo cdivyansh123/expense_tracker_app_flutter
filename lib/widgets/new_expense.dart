@@ -20,7 +20,8 @@ class _NewExpenseState extends State<NewExpense> {
 
   DateTime? _selectedDate;
 
-  Category _selectedCategory=Category.leisure;
+  Category _selectedCategory = Category.leisure;
+
   void _presentDatePicker() async {
     final pickedDate = await showDatePicker(
         context: context,
@@ -32,24 +33,35 @@ class _NewExpenseState extends State<NewExpense> {
     });
   }
 
-  void _submitExpenseData(){
-    final enteredAmount=double.tryParse(_amountController.text);
-    final amountIsInvalid=enteredAmount==null || enteredAmount<=0;
+  void _submitExpenseData() {
+    final enteredAmount = double.tryParse(_amountController.text);
+    final amountIsInvalid = enteredAmount == null || enteredAmount <= 0;
 
-    if(_titleController.text.trim().isEmpty || amountIsInvalid || _selectedDate==null){
-      showDialog(context: context, builder: (ctx)=>AlertDialog(
-        title: Text("Invalid Input"),
-        content: Text("please make sure a valid title, amount, date and category was entered"),
-        actions: [
-          TextButton(onPressed: (){
-            Navigator.pop(ctx);
-          }, child: Text("close"))
-        ],
-      ));
+    if (_titleController.text.trim().isEmpty ||
+        amountIsInvalid ||
+        _selectedDate == null) {
+      showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+                title: Text("Invalid Input"),
+                content: Text(
+                    "please make sure a valid title, amount, date and category was entered"),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(ctx);
+                      },
+                      child: Text("close"))
+                ],
+              ));
 
       return;
     }
-    widget.onAddExpense(Expenses(title: _titleController.text, amount: enteredAmount , date: _selectedDate!, category: _selectedCategory));
+    widget.onAddExpense(Expenses(
+        title: _titleController.text,
+        amount: enteredAmount,
+        date: _selectedDate!,
+        category: _selectedCategory));
     Navigator.pop(context);
   }
 
@@ -63,7 +75,7 @@ class _NewExpenseState extends State<NewExpense> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(16,50,16,16),
+      padding: EdgeInsets.fromLTRB(16, 50, 16, 16),
       child: Column(
         children: [
           TextField(
@@ -107,25 +119,29 @@ class _NewExpenseState extends State<NewExpense> {
               )
             ],
           ),
-          SizedBox(height: 16,),
+          SizedBox(
+            height: 16,
+          ),
           Row(
             children: [
               DropdownButton(
-                value: _selectedCategory,
-                  items: Category.values.map(
-                    (category) => DropdownMenuItem(
-                      value: category,
-                      child: Text(
-                        category.name.toUpperCase(),
-                      ),
-                    ),
-                  ).toList(),
+                  value: _selectedCategory,
+                  items: Category.values
+                      .map(
+                        (category) => DropdownMenuItem(
+                          value: category,
+                          child: Text(
+                            category.name.toUpperCase(),
+                          ),
+                        ),
+                      )
+                      .toList(),
                   onChanged: (value) {
                     setState(() {
-                      if(value==null){
+                      if (value == null) {
                         return;
                       }
-                      _selectedCategory=value;
+                      _selectedCategory = value;
                     });
                   }),
               Spacer(),
@@ -136,10 +152,7 @@ class _NewExpenseState extends State<NewExpense> {
                   },
                   child: Text("Cancel")),
               ElevatedButton(
-                  onPressed: _submitExpenseData,
-                  child: Text("Save Expense")
-              ),
-
+                  onPressed: _submitExpenseData, child: Text("Save Expense")),
             ],
           )
         ],
