@@ -13,16 +13,16 @@ class Expense extends StatefulWidget {
 
 class _ExpenseState extends State<Expense> {
   final List<Expenses> _registerExpense = [
-    // Expenses(
-    //     title: "flutter course",
-    //     amount: 500,
-    //     date: DateTime.now(),
-    //     category: Category.work),
-    // Expenses(
-    //     title: "cinema",
-    //     amount: 700,
-    //     date: DateTime.now(),
-    //     category: Category.leisure),
+    Expenses(
+        title: "flutter course",
+        amount: 500,
+        date: DateTime.now(),
+        category: Category.work),
+    Expenses(
+        title: "cinema",
+        amount: 700,
+        date: DateTime.now(),
+        category: Category.leisure),
   ];
 
   void _openAddExpense() {
