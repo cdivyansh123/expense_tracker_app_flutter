@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
-final uuid = Uuid();
+const uuid = Uuid();
 
 enum Category { food, travel, leisure, work }
 
@@ -35,25 +34,24 @@ class Expenses {
   }
 }
 
-
-class ExpenseBucket{
+class ExpenseBucket {
   ExpenseBucket({
     required this.category,
     required this.expenses,
-});
+  });
 
-  ExpenseBucket.forCategory(
-      List<Expenses> allExpenses,
-      this.category
-      ):expenses=allExpenses.where((expense) => expense.category == category).toList();
+  ExpenseBucket.forCategory(List<Expenses> allExpenses, this.category)
+      : expenses = allExpenses
+            .where((expense) => expense.category == category)
+            .toList();
 
   final Category category;
   final List<Expenses> expenses;
 
-  double get totalExpenses{
-    double sum=0;
-    for(final expense in expenses){
-      sum=sum+expense.amount;
+  double get totalExpenses {
+    double sum = 0;
+    for (final expense in expenses) {
+      sum = sum + expense.amount;
     }
 
     return sum;
